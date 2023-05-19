@@ -2,7 +2,7 @@
 import Button from "@/app/components/Button";
 // imports
 import Input from "@/app/components/Input/Input";
-
+import axios from "axios";
 
 // imports from react
 import { useCallback, useState } from "react"
@@ -58,7 +58,7 @@ const AuthForm = () => {
 
         // AXIOS call for Register
         if (variant === 'REGISTER') {
-
+            axios.post('/api/register', data)
         }
 
         // NextAuth signIn
