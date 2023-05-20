@@ -3,6 +3,7 @@ import Button from "@/app/components/Button";
 // imports
 import Input from "@/app/components/Input/Input";
 import axios from "axios";
+import { signIn } from 'next-auth/react'
 
 // imports from react
 import { useCallback, useState } from "react"
@@ -13,6 +14,7 @@ import AuthSocialButton from "../AuthSocialButton";
 // import icons
 
 import { AiOutlineGoogle, AiFillGithub } from 'react-icons/ai'
+import toast from "react-hot-toast";
 // imports
 
 
@@ -59,19 +61,51 @@ const AuthForm = () => {
         // AXIOS call for Register
         if (variant === 'REGISTER') {
             axios.post('/api/register', data)
+                .catch(() => toast.error('Something went wrong'))
+                .finally(() => {
+                    // isLoading false
+                    setIsLoading(false);
+                }
+                )
         }
 
         // NextAuth signIn
         if (variant === 'LOGIN') {
-
+            // callback to get credentials from server
+            signIn('credentials', {
+                ...data,
+                redirect: false
+            })
+                // if user enter invalid credentials
+                .then((callback) => {
+                    if (callback?.error) {
+                        toast.error('Invalid Credentials')
+                    }
+                    // if user enter valid credentials
+                    if (callback?.ok && !callback?.error) {
+                        toast.success("Successfully Logged In")
+                    }
+                })
+                .finally(() => setIsLoading(false))
         }
     }
 
     // social SignIn & SignUp
     const socialAction = (action: string) => {
         setIsLoading(true)
+        
+        signIn(action, { redirect: false })
+            .then((callback) => {
+                if (callback?.error) {
+                    toast.error('Something went wrong')
+                }
+                if (callback?.ok && !callback?.error) {
+                    toast.success("Successfully Logged In")
+                }
+            }
+            )
+            .finally(() => setIsLoading(false))
     }
-
     return (
         // login form container
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
