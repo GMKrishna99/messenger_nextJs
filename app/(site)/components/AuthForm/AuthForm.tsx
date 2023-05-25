@@ -1,20 +1,23 @@
 'use client'
-import Button from "@/app/components/Button";
 // imports
-import Input from "@/app/components/Input/Input";
 import axios from "axios";
-import { signIn } from 'next-auth/react'
-
-// imports from react
-import { useCallback, useState } from "react"
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import Input from "@/app/components/Input/Input";
+import Button from "@/app/components/Button";
 import AuthSocialButton from "../AuthSocialButton";
 
+// imports from react
+import { useCallback, useEffect, useState } from "react"
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { signIn, useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+
+
+import Image from 'next/image'
+import Logo from '../../../../public/images/logo.png'
 
 // import icons
-
 import { AiOutlineGoogle, AiFillGithub } from 'react-icons/ai'
-import toast from "react-hot-toast";
 // imports
 
 
@@ -22,11 +25,25 @@ import toast from "react-hot-toast";
 type Variant = 'LOGIN' | 'REGISTER'
 
 const AuthForm = () => {
+    // session hook authenticated then redirect to home page
+    const session = useSession();
+
+    //use router hook for redirecting 
+    const router = useRouter();
 
     const [variant, setVariant] = useState<Variant>('LOGIN');
 
     // it gonna be used to disable & enable buttons
     const [isLoading, setIsLoading] = useState(false);
+
+    // if current status is authenticated then redirect to home page
+    useEffect(() => {
+        if (session?.status === 'authenticated') {
+            // redirect to users page
+            router.push('/users')
+        }
+    }, [session?.status, router])
+
 
     // toggle for switch between Register & login
     const toggleVariant = useCallback(() => {
@@ -61,6 +78,8 @@ const AuthForm = () => {
         // AXIOS call for Register
         if (variant === 'REGISTER') {
             axios.post('/api/register', data)
+                // sign when register is success
+                .then(() => signIn('credentials', data))
                 .catch(() => toast.error('Something went wrong'))
                 .finally(() => {
                     // isLoading false
@@ -69,7 +88,7 @@ const AuthForm = () => {
                 )
         }
 
-        // NextAuth signIn
+        // NextAuth signIn  function for login and register
         if (variant === 'LOGIN') {
             // callback to get credentials from server
             signIn('credentials', {
@@ -84,6 +103,8 @@ const AuthForm = () => {
                     // if user enter valid credentials
                     if (callback?.ok && !callback?.error) {
                         toast.success("Successfully Logged In")
+                        router.push('/users')
+
                     }
                 })
                 .finally(() => setIsLoading(false))
@@ -93,7 +114,7 @@ const AuthForm = () => {
     // social SignIn & SignUp
     const socialAction = (action: string) => {
         setIsLoading(true)
-        
+
         signIn(action, { redirect: false })
             .then((callback) => {
                 if (callback?.error) {
@@ -111,6 +132,22 @@ const AuthForm = () => {
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
             {/* login form  */}
             <div className="bg-slate-100 px-4 py-8 shadow sm:rounded-lg sm:px-10">
+                <div className='flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8'>
+                    <div className='sm:mx-auto sm:w-full sm:max-w-md'>
+                        <Image
+                            alt='Logo'
+                            height="48"
+                            width="48"
+                            className='mx-auto w-auto'
+                            src={Logo}
+                        />
+                        <h2 className='mt-6 text-center text-2xl font-bold tracking-tight text-slate-800'>
+                            {variant === 'LOGIN' ? 'Sign in to your account' : 'Create your Account'}
+                        </h2>
+                    </div>
+                    {/* <AuthForm /> */}
+
+                </div>
                 {/* form fields 
                     ** written handleSubmit for get data when submit and we abe to send && get form the server
                 */}
