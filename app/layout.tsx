@@ -1,3 +1,4 @@
+import AuthContext from './context/AuthContext'
 import ToasterContext from './context/ToasterContext'
 import './globals.css'
 import { Nunito } from 'next/font/google'
@@ -18,9 +19,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         {/* toaster that give error notification */}
-        <ToasterContext />
-
-        {children}
+        <AuthContext>
+          <ToasterContext />
+          {children}
+        </AuthContext>
       </body>
     </html>
   )
