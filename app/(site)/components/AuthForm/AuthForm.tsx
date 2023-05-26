@@ -132,8 +132,8 @@ const AuthForm = () => {
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
             {/* login form  */}
             <div className="bg-slate-100 px-4 py-8 shadow sm:rounded-lg sm:px-10">
-                <div className='flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8'>
-                    <div className='sm:mx-auto sm:w-full sm:max-w-md'>
+                <div className='min-h-full justify-center py-12 sm:px-6 lg:px-8'>
+                    <div className='sm:mx-auto sm:w-full sm:max-w-md flex items-center justify-center'>
                         <Image
                             alt='Logo'
                             height="48"
@@ -141,8 +141,8 @@ const AuthForm = () => {
                             className='mx-auto w-auto'
                             src={Logo}
                         />
-                        <h2 className='mt-6 text-center text-2xl font-bold tracking-tight text-slate-800'>
-                            {variant === 'LOGIN' ? 'Sign in to your account' : 'Create your Account'}
+                        <h2 className=' w-full  text-center text-2xl font-bold text-slate-900'>
+                            {variant === 'LOGIN' ? 'Welcome Back' : 'Create an Account'}
                         </h2>
                     </div>
                     {/* <AuthForm /> */}
