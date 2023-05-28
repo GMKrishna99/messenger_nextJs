@@ -56,12 +56,32 @@ export async function POST(request: Request) {
         ],
       },
     });
-    // only existing one 
+    // only existing one
+    const singleConversation = existingConversations[0];
+    if (singleConversation) {
+      return NextResponse.json(singleConversation);
+    }
+    // new conversation
+    const newConversation = await prisma.conversation.create({
+      data: {
+        users: {
+          connect: [
+            {
+              id: currentUser.id,
+            },
+            {
+              id: userId,
+            },
+          ],
+        },
+      },
+      include: {
+        users: true,
+      },
+    });
 
-
+    return NextResponse.json(newConversation);
   } catch (error: any) {
     return new NextResponse("Internal server error", { status: 500 });
   }
 }
-
-
