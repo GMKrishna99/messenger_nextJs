@@ -38,7 +38,7 @@ const Header: React.FC<HeaderProps> = ({
                     user={otherUser}
                 />
                 <div className="flex flex-col">
-                    <div className="text-slate-800 font-bold text-lg">
+                    <div className="text-slate-800 font-bold text-lg capitalize">
                         {conversation.name || otherUser.name}
                     </div>
                     <div className="text-sm font-light text-slate-500 ">
