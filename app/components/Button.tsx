@@ -28,7 +28,7 @@ const Button: React.FC<ButtonProps> = ({
         `,
             disabled && "opacity-50 cursor-default",
             fullWidth && 'w-full',
-            secondary ? 'text-slate-900' : 'text-white',
+            secondary ? 'text-slate-900  hover:bg-slate-900  hover:text-slate-50 transition' : 'text-white',
             danger && "bg-rose-500 hover:bg-rose-600 focus-visible:outline-rose-600",
             !secondary && !danger && 'bg-slate-800 hover:bg-slate-900 focus-visible:outline-slate-800'
         )} >
