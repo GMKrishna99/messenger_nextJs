@@ -8,6 +8,7 @@ import { useMemo, useState } from "react"
 import { HiChevronLeft } from "react-icons/hi"
 import { HiEllipsisHorizontal } from "react-icons/hi2"
 import ProfileDrawer from "./ProfileDrawer"
+import AvatarGroup from "@/app/components/AvatarGroup"
 
 
 // interface props
@@ -45,9 +46,13 @@ const Header: React.FC<HeaderProps> = ({
                     <Link href="/conversations" className="lg:hidden block text-slate-800 hover:text-slate-900">
                         <HiChevronLeft size={32} />
                     </Link>
-                    <Avatar
-                        user={otherUser}
-                    />
+                    {conversation.isGroup ? (
+                        <AvatarGroup users={conversation.users} />
+                    ) : (
+                        <Avatar
+                            user={otherUser}
+                        />
+                    )}
                     <div className="flex flex-col">
                         <div className="text-slate-800 font-bold text-lg capitalize">
                             {conversation.name || otherUser.name}

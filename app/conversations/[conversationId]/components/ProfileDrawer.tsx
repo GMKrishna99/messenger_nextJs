@@ -10,6 +10,7 @@ import { Fragment, useMemo, useState } from "react";
 import { IoClose } from 'react-icons/io5';
 import { TbTrashXFilled } from 'react-icons/tb'
 import ConfirmModal from "./ConfirmModal";
+import AvatarGroup from "@/app/components/AvatarGroup";
 
 interface ProfileDrawerProps {
     isOpen: boolean;
@@ -87,7 +88,11 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                                             <div className="relative mt-6 flex-1 px-4 sm:px-6">
                                                 <div className="flex flex-col items-center">
                                                     <div className="mb-2">
-                                                        <Avatar user={otherUser} />
+                                                        {data.isGroup ? (
+                                                            <AvatarGroup users={data.users} />
+                                                        ) : (
+                                                            <Avatar user={otherUser} />
+                                                        )}
                                                     </div>
                                                     <div className="capitalize text-lg font-semibold text-slate-800">
                                                         {title}
@@ -107,6 +112,17 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                                                     </div>
                                                     <div className="w-full pb-5 pt-5 sm:px-0 sm:pt-0">
                                                         <dl className="space-y-8 px-4 sm:space-y-6 sm:px-6">
+                                                            {data.isGroup && (
+                                                                <div >
+                                                                    <dt className="text-sm font-medium text-slate-500 sm;w-40 sm:flex-shrink-0">
+                                                                        Emails
+                                                                    </dt>
+                                                                    <dd className="mt-1 text-sm text-slate-900  sm:col-span-2">
+                                                                        {data.users.map((user) => user.email).join(',  ')}
+
+                                                                    </dd>
+                                                                </div>
+                                                            )}
                                                             {!data.isGroup && (
                                                                 <div className="">
                                                                     <dt className="text-sm font-medium text-slate-500 sm:w-40 sm:flex-shrink-0">
