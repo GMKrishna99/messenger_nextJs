@@ -9,6 +9,7 @@ import { HiChevronLeft } from "react-icons/hi"
 import { HiEllipsisHorizontal } from "react-icons/hi2"
 import ProfileDrawer from "./ProfileDrawer"
 import AvatarGroup from "@/app/components/AvatarGroup"
+import useActiveList from "@/app/hooks/useActiveList"
 
 
 // interface props
@@ -25,13 +26,15 @@ const Header: React.FC<HeaderProps> = ({
     const otherUser = useOtherUser(conversation)
     // user details menu opes
     const [drawerOpen, setDrawerOpen] = useState(false)
+    const { members } = useActiveList()
+    const isActive = members.indexOf(otherUser?.email!) !== -1
     const statusText = useMemo(() => {
         // it gonna show the how many members are in the group
         if (conversation.isGroup) {
             return `${conversation.users.length} members`
         }
-        return 'Active'
-    }, [conversation])
+        return isActive ? 'Online' : 'Offline';
+    }, [conversation, isActive])
     return (
         <>
             {/* profile drawer component */}
