@@ -117,9 +117,8 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                                                                     <dt className="text-sm font-medium text-slate-500 sm;w-40 sm:flex-shrink-0">
                                                                         Emails
                                                                     </dt>
-                                                                    <dd className="mt-1 text-sm text-slate-900  sm:col-span-2">
-                                                                        {data.users.map((user) => user.email).join(',  ')}
-
+                                                                    <dd className="mt-1 text-sm sm:col-span-2 text-slate-900">
+                                                                        {data.users.map((user) => user.email).join(', ')}
                                                                     </dd>
                                                                 </div>
                                                             )}
