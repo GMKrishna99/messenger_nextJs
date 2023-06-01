@@ -6,6 +6,8 @@ import clsx from "clsx";
 import { useSession } from "next-auth/react";
 import format from "date-fns/format";
 import Image from "next/image";
+import { useState } from "react";
+import ImageModal from "./ImageModal";
 
 
 interface MessageBoxProps {
@@ -20,6 +22,9 @@ const MessageBox: React.FC<MessageBoxProps> = ({
 }) => {
     // session hook
     const session = useSession();
+    //state to open image form messages
+    const [imageModalOpen, setImageModalOpen] = useState(false)
+    //state to open image form messages
 
     // check if the message is sent by the current user or other user and seen by some one 
     const isOwn = session?.data?.user?.email === data?.sender?.email;
@@ -58,9 +63,15 @@ const MessageBox: React.FC<MessageBoxProps> = ({
                         {format(new Date(data.createdAt), 'p')}
                     </div>
                 </div>
-                <div className={message}>
+                <div className={message} >
+                    <ImageModal
+                        src={data.image}
+                        isOpen={imageModalOpen}
+                        onClose={() => setImageModalOpen(false)}
+                    />
                     {data.image ? (
                         <Image
+                            onClick={() => setImageModalOpen(true)}
                             alt="sent image"
                             height="288"
                             width="288"
