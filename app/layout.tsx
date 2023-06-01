@@ -1,3 +1,4 @@
+import ActiveStatus from './components/ActiveStatus'
 import AuthContext from './context/AuthContext'
 import ToasterContext from './context/ToasterContext'
 import './globals.css'
@@ -21,6 +22,7 @@ export default function RootLayout({
         {/* toaster that give error notification */}
         <AuthContext>
           <ToasterContext />
+          <ActiveStatus />
           {children}
         </AuthContext>
       </body>
